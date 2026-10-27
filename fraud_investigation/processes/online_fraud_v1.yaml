@@ -1,0 +1,31 @@
+process_id: online_fraud_v1
+version: "1.0.0"
+description: Online fraud alert investigation — previous interaction, OAT (device+IP), stubs for payee/profile, aggregate.
+alert_types:
+  - ONLINE_FRAUD
+
+adapters:
+  notes: notes_memory
+  oat: oat_memory
+  device: device_memory
+  ip: ip_memory
+  # Tomorrow: swap to HTTP without changing steps
+  # device: http_device
+  # ip: http_ip
+
+steps:
+  - id: previous_interaction
+    type: previous_interaction
+  - id: oat_review
+    type: oat_review
+  - id: transaction_payee_review
+    type: transaction_payee_review
+  - id: customer_profile_review
+    type: customer_profile_review
+  - id: aggregate
+    type: aggregate
+
+policy:
+  contact_on_red: true
+  disposition_if_no_red: "No fraud"
+  disposition_if_red: "Pending"
